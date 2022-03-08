@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DryPro.Inventory.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DryPro.Inventory.Infrastructure.DbContexts
@@ -13,5 +14,7 @@ namespace DryPro.Inventory.Infrastructure.DbContexts
         {
 
         }
+
+        public DbSet<Product> Products { get; set; }
     }
 }
