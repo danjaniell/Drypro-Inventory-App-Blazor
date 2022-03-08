@@ -21,6 +21,8 @@ namespace DryPro.Inventory.Infrastructure.DbContexts
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Parts> Parts { get; set; }
+
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker.Entries()
