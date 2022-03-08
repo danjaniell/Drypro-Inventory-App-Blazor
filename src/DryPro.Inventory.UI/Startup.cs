@@ -10,12 +10,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using MudBlazor.Services;
 using DryPro.Inventory.Infrastructure.DbContexts;
 using DryPro.Inventory.Core.Services.Base;
 using DryPro.Inventory.Core.Services;
 using DryPro.Inventory.Infrastructure.Repositories.Base;
 using DryPro.Inventory.Infrastructure.Repositories;
+using DryPro.Inventory.Core.Entities;
+using DryPro.Inventory.Application.Validators;
 
 namespace DryPro.Inventory.UI
 {
@@ -36,6 +40,8 @@ namespace DryPro.Inventory.UI
             services.AddHttpContextAccessor();
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+            services.AddFluentValidation();
+            services.AddTransient<IValidator<Product>, ProductValidator>();
             services.AddMudServices();
             services.AddRazorPages();
             services.AddServerSideBlazor();
