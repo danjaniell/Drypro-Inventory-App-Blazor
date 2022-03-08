@@ -1,0 +1,50 @@
+<MudText Align="Align.Center" Typo="Typo.h3" Color="Color.Primary">
+    DryPro Inventory Management UI
+</MudText>
+
+<MudPaper Elevation="3" Class="my-5 py-5">
+    <MudCarousel Class="mud-width-full" Style="height:420px;" ShowArrows="@arrows" ShowBullets="@bullets"
+        AutoCycle="@autocycle" TData="object">
+        <MudCarouselItem Transition="transition">
+            <div class="d-flex" style="height:100%">
+                <MudItem Class="mx-auto my-auto" Size="@Size.Medium">
+                    <img src="/assets/landing_image1.jpg" alt="image 1" />
+                </MudItem>
+            </div>
+        </MudCarouselItem>
+        <MudCarouselItem Transition="transition">
+            <div class="d-flex" style="height:100%">
+                <MudItem Class="mx-auto my-auto" Size="@Size.Medium">
+                    <img src="/assets/landing_image2.jpg" alt="image 2" />
+                </MudItem>
+            </div>
+        </MudCarouselItem>
+        <MudCarouselItem Transition="transition">
+            <div class="d-flex" style="height:100%">
+                <MudItem Class="mx-auto my-auto" Size="@Size.Medium">
+                    <img src="/assets/landing_image3.jpg" alt="image 3" />
+                </MudItem>
+            </div>
+        </MudCarouselItem>
+        <MudCarouselItem Transition="transition">
+            <div class="d-flex" style="height:100%">
+                <MudItem Class="mx-auto my-auto" Size="@Size.Medium">
+                    <img src="/assets/landing_image4.jpg" alt="image 4" />
+                </MudItem>
+            </div>
+        </MudCarouselItem>
+    </MudCarousel>
+</MudPaper>
+
+<MudPaper Elevation="3" Class="my-5 py-5">
+    <MudText Align="Align.Center">
+        Go to <MudLink Href="https://shopee.ph/dry.pro" Target="_blank" Typo="Typo.h6">shop.</MudLink>
+    </MudText>
+</MudPaper>
+
+@code {
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Fade;
+}
