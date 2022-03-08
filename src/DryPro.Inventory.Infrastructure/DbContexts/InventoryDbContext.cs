@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DryPro.Inventory.Core.Entities;
 using DryPro.Inventory.Core.Services.Base;
 using Microsoft.EntityFrameworkCore;
+using Bogus;
 
 namespace DryPro.Inventory.Infrastructure.DbContexts
 {
@@ -22,6 +23,25 @@ namespace DryPro.Inventory.Infrastructure.DbContexts
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Parts> Parts { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            var ids = 1;
+            var contacts = new Faker<Product>()
+                .RuleFor(m => m.Id, f => ids++)
+                .RuleFor(m => m.Name, f => f.Commerce.ProductName())
+                .RuleFor(m => m.Description, f => f.Commerce.ProductDescription())
+                .RuleFor(m => m.StockItems, f => f.Random.Number(30))
+                .RuleFor(m => m.CreatedBy, f => f.Hacker.Noun())
+                .RuleFor(m => m.ModifiedBy, f => f.Hacker.Noun())
+                .RuleFor(m => m.CreatedAt, f => f.Date.Past())
+                .RuleFor(m => m.ModifiedAt, f => f.Date.Recent(days: 60));
+            modelBuilder
+                .Entity<Product>()
+                .HasData(contacts.GenerateBetween(1000, 1000));
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
