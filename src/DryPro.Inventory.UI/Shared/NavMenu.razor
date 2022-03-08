@@ -1,13 +1,13 @@
-<MudDrawer @bind-Open="SideBarOpen" Elevation="1">
+<MudDrawer @bind-Open="SideBarOpen" Elevation="1" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Mini">
     <MudDrawerHeader>
-        <MudAvatar Color="Color.Transparent" Size="Size.Large" Image="assets/logo.png" />
+        <MudAvatar Color="Color.Transparent" Size="Size.Small" Image="assets/logo.png" />
         <MudText Typo="Typo.h5" Color="Color.Primary" Style="margin-top:10px; margin-left:15px;">DryPro</MudText>
     </MudDrawerHeader>
     <MudNavMenu>
         <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Filled.Home">Home</MudNavLink>
         <MudNavLink Href="/Product" Icon="@Icons.Filled.SpaceDashboard">Products</MudNavLink>
         <MudNavLink Href="/Parts" Icon="@Icons.Filled.DashboardCustomize">Parts</MudNavLink>
-        <MudNavGroup Title="Inventory" Icon="@Icons.Filled.Storage" Expanded="true">
+        <MudNavGroup Title="Inventory" Icon="@Icons.Filled.Storage" Expanded="false">
             <MudNavLink Href="#" Icon="@Icons.Filled.BorderAll">Stocks</MudNavLink>
             <MudNavLink Href="#" Icon="@Icons.Filled.ShoppingBag">Orders</MudNavLink>
         </MudNavGroup>
