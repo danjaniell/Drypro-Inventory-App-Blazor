@@ -1,17 +1,15 @@
 @inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<title>DryPro Inventory</title>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
-</div>
+<MudLayout>
+    <MudAppBar Color="Color.Primary">
+        <MudText Typo="Typo.h4">DryPro Inventory</MudText>
+    </MudAppBar>
+    <MudMainContent class="mt-4">
+        @Body
+    </MudMainContent>
+</MudLayout>
