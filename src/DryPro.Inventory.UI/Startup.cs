@@ -14,6 +14,8 @@ using MudBlazor.Services;
 using DryPro.Inventory.Infrastructure.DbContexts;
 using DryPro.Inventory.Core.Services.Base;
 using DryPro.Inventory.Core.Services;
+using DryPro.Inventory.Infrastructure.Repositories.Base;
+using DryPro.Inventory.Infrastructure.Repositories;
 
 namespace DryPro.Inventory.UI
 {
@@ -33,6 +35,7 @@ namespace DryPro.Inventory.UI
             services.AddDbContext<InventoryDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL")));
             services.AddHttpContextAccessor();
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddMudServices();
             services.AddRazorPages();
             services.AddServerSideBlazor();
