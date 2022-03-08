@@ -1,0 +1,20 @@
+@inject IRepositoryManager Repository
+
+@if (products != null)
+{
+    <ul>
+        @foreach (var product in products)
+        {
+            <li>@product.Name @product.Description</li>
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<Product> products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Repository.Products.GetAllProducts(false);
+    }
+}
