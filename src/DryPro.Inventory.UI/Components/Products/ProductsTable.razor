@@ -20,7 +20,8 @@
 </MudContainer>
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Product>>>(ServerReload))"
-    RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Product" Hover="true" @ref="table" Height="100%">
+    RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Product" Hover="true" @ref="table" Height="100%"
+    @bind-SelectedItem="SelectedProduct">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Products</MudText>
         <MudSpacer />
@@ -60,11 +61,10 @@
     private MudTable<Product> table;
     private int totalItems;
     private string searchString;
-    private Product SelectedProduct;
+    private Product SelectedProduct { get; set; }
 
     private async Task ActionCallback()
     {
-        this.StateHasChanged();
         await table.ReloadServerData();
     }
 
@@ -96,6 +96,10 @@
         }
 
         pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+
+        SelectedProduct = null;
+        this.StateHasChanged();
+
         return new TableData<Product>() { TotalItems = totalItems, Items = pagedData };
     }
 
@@ -107,17 +111,11 @@
 
     private void RowClickEvent(TableRowClickEventArgs<Product> tableRowClickEventArgs)
     {
-        SelectedProduct = tableRowClickEventArgs.Item;
     }
 
     private string SelectedRowClassFunc(Product product, int rowNumber)
     {
-        if (selectedRowNumber == rowNumber)
-        {
-            selectedRowNumber = -1;
-            return string.Empty;
-        }
-        else if (table.SelectedItem != null && table.SelectedItem.Equals(product))
+        if (table.SelectedItem != null && table.SelectedItem.Equals(product))
         {
             selectedRowNumber = rowNumber;
             return "selected";

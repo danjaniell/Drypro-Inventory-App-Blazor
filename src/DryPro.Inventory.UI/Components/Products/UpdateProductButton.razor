@@ -1,8 +1,8 @@
 @inject IRepositoryManager Repository
 @inject IDialogService _dialogService;
 
-<MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Size="Size.Medium" IconSize="Size.Medium"
-    Label="Update Product" Class="ma-2" @onclick="(e => UpdateAsync())" />
+<MudFab Disabled="@(Product == null ? true : false)" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit"
+    Size="Size.Medium" IconSize="Size.Medium" Label="Update Product" Class="ma-2" @onclick="(e => UpdateAsync())" />
 
 @code {
     [Parameter] public Product Product { get; set; }
