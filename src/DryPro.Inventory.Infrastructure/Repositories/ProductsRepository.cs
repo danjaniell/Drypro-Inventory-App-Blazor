@@ -18,7 +18,7 @@ namespace DryPro.Inventory.Infrastructure.Repositories
 
         public void DeleteProduct(Product product) => Delete(product);
 
-        public async Task<IEnumerable<Product>> GetAllProducts(bool trackChanges) => await FindAll(trackChanges).OrderBy(x => x.ModifiedAt).ToListAsync();
+        public async Task<IEnumerable<Product>> GetAllProducts(bool trackChanges) => await FindAll(trackChanges).OrderByDescending(x => x.ModifiedAt).ToListAsync();
 
         public async Task<Product> GetProductById(int id, bool trackChanges) => await FindByCondition((x) => x.Id == id, trackChanges).SingleOrDefaultAsync();
 
