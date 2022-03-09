@@ -13,6 +13,9 @@
         color: white !important;
     }
 </style>
+
+<AddProductButton />
+
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Product>>>(ServerReload))"
     RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Product" Hover="true" @ref="table" Height="100%">
     <ToolBarContent>

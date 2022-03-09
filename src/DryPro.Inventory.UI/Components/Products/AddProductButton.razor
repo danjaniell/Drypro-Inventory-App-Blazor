@@ -1,0 +1,23 @@
+@inject IRepositoryManager Repository
+@inject IDialogService _dialogService;
+
+<MudContainer Class="d-flex justify-left mb-2">
+    <MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Size="Size.Medium" IconSize="Size.Medium"
+        Label="Add Product" Class="ma-2" @onclick="(e => CreateAsync())" />
+</MudContainer>
+
+@code {
+    private async Task CreateAsync()
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("product", new Product());
+        var dialog = await _dialogService.Show<AddUpdateProductsDialog>("Create", parameters).Result;
+
+        if (dialog.Data != null)
+        {
+            Product newProduct = dialog.Data as Product;
+            await Repository.Products.CreateProduct(newProduct);
+            await Repository.SaveAsync();
+        }
+    }
+}
