@@ -25,6 +25,21 @@
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
+        },        
+        {
+            "name": "Watch",
+            "type": "coreclr",
+            "request": "launch",
+            "cwd": "${workspaceFolder}\\src\\DryPro.Inventory.UI\\",
+            "program": "dotnet",
+            "args": [
+                "watch",
+                "-p",
+                ".",
+                "run",
+                "--verbose",
+            ],
+            "preLaunchTask": "build"
         },
         {
             "name": ".NET Core Attach",
