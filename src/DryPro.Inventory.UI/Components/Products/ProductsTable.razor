@@ -16,6 +16,7 @@
 <MudContainer Class="d-flex justify-left mb-2">
     <AddProductButton />
     <UpdateProductButton Product="SelectedProduct" />
+    <DeleteProductButton Product="SelectedProduct" />
 </MudContainer>
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Product>>>(ServerReload))"

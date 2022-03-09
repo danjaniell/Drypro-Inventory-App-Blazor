@@ -1,0 +1,25 @@
+@inject IRepositoryManager Repository
+@inject IDialogService _dialogService;
+
+<MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Delete" Size="Size.Medium" IconSize="Size.Medium"
+    Label="Delete Product" Class="ma-2" @onclick="(e => DeleteAsync())" />
+
+@code {
+    [Parameter] public Product Product { get; set; }
+
+    private async Task DeleteAsync()
+    {
+        bool? result = await _dialogService.ShowMessageBox(
+        "Confirmation",
+        "Are you sure you want to delete the selected item/s?",
+        yesText: "Delete", cancelText: "Cancel");
+
+        if (result ?? false)
+        {
+            var productToDelete = Product;
+            Repository.Products.DeleteProduct(productToDelete);
+            await Repository.SaveAsync();
+            this.StateHasChanged();
+        }
+    }
+}
