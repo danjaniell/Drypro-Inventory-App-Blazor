@@ -5,6 +5,8 @@
     Label="Add Product" Class="ma-2" @onclick="(e => CreateAsync())" />
 
 @code {
+    [Parameter] public EventCallback OnAddProduct { get; set; }
+
     private async Task CreateAsync()
     {
         var parameters = new DialogParameters();
@@ -16,6 +18,7 @@
             Product newProduct = dialog.Data as Product;
             await Repository.Products.CreateProduct(newProduct);
             await Repository.SaveAsync();
+            await OnAddProduct.InvokeAsync();
         }
     }
 }

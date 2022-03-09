@@ -6,6 +6,7 @@
 
 @code {
     [Parameter] public Product Product { get; set; }
+    [Parameter] public EventCallback OnUpdateProduct { get; set; }
 
     private async Task UpdateAsync()
     {
@@ -18,7 +19,7 @@
             var updatedProduct = dialog.Data as Product;
             Repository.Products.UpdateProduct(updatedProduct);
             await Repository.SaveAsync();
-            this.StateHasChanged();
+            await OnUpdateProduct.InvokeAsync();
         }
     }
 }

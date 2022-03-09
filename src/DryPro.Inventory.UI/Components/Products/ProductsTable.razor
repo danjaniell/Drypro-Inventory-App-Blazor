@@ -14,9 +14,9 @@
     }
 </style>
 <MudContainer Class="d-flex justify-left mb-2">
-    <AddProductButton />
-    <UpdateProductButton Product="SelectedProduct" />
-    <DeleteProductButton Product="SelectedProduct" />
+    <AddProductButton OnAddProduct="ActionCallback" />
+    <UpdateProductButton Product="SelectedProduct" OnUpdateProduct="ActionCallback" />
+    <DeleteProductButton Product="SelectedProduct" OnDeleteProduct="ActionCallback" />
 </MudContainer>
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Product>>>(ServerReload))"
@@ -61,6 +61,12 @@
     private int totalItems;
     private string searchString;
     private Product SelectedProduct;
+
+    private async Task ActionCallback()
+    {
+        this.StateHasChanged();
+        table.ReloadServerData();
+    }
 
     private async Task<TableData<Product>> ServerReload(TableState state)
     {
