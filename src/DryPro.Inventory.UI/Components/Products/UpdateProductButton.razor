@@ -1,0 +1,24 @@
+@inject IRepositoryManager Repository
+@inject IDialogService _dialogService;
+
+<MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" Size="Size.Medium" IconSize="Size.Medium"
+    Label="Update Product" Class="ma-2" @onclick="(e => UpdateAsync())" />
+
+@code {
+    [Parameter] public Product Product { get; set; }
+
+    private async Task UpdateAsync()
+    {
+        var parameters = new DialogParameters();
+        var productToUpdate = Product;
+        parameters.Add("product", productToUpdate);
+        var dialog = await _dialogService.Show<AddUpdateProductsDialog>("Update", parameters).Result;
+        if (dialog.Data != null)
+        {
+            var updatedProduct = dialog.Data as Product;
+            Repository.Products.UpdateProduct(updatedProduct);
+            await Repository.SaveAsync();
+            this.StateHasChanged();
+        }
+    }
+}

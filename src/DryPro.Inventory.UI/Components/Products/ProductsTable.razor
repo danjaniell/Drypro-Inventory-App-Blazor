@@ -13,8 +13,10 @@
         color: white !important;
     }
 </style>
-
-<AddProductButton />
+<MudContainer Class="d-flex justify-left mb-2">
+    <AddProductButton />
+    <UpdateProductButton Product="SelectedProduct" />
+</MudContainer>
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<Product>>>(ServerReload))"
     RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Product" Hover="true" @ref="table" Height="100%">
@@ -57,6 +59,7 @@
     private MudTable<Product> table;
     private int totalItems;
     private string searchString;
+    private Product SelectedProduct;
 
     private async Task<TableData<Product>> ServerReload(TableState state)
     {
@@ -97,6 +100,7 @@
 
     private void RowClickEvent(TableRowClickEventArgs<Product> tableRowClickEventArgs)
     {
+        SelectedProduct = tableRowClickEventArgs.Item;
     }
 
     private string SelectedRowClassFunc(Product product, int rowNumber)
