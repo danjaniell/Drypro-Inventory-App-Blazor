@@ -1,0 +1,116 @@
+@inject IRepositoryManager Repository
+
+<style>
+    .selected {
+        background-color: #1E88E5 !important;
+    }
+
+    .selected>td {
+        color: white !important;
+    }
+
+    .selected>td .mud-input {
+        color: white !important;
+    }
+</style>
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Product>>>(ServerReload))"
+    RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Product" Hover="true" @ref="table" Height="100%">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Products</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="name_field" T="Product">Name</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="desc_field" T="Product">Description</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="stockItems_field" T="Product">Stock Items</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Stock Items">@context.StockItems</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private int selectedRowNumber = -1;
+    private IEnumerable<Product> pagedData;
+    private MudTable<Product> table;
+    private int totalItems;
+    private string searchString;
+
+    private async Task<TableData<Product>> ServerReload(TableState state)
+    {
+        IEnumerable<Product> data = await Repository.Products.GetAllProducts(false);
+        data = data.Where(x =>
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+                return true;
+            if (x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (x.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }).ToArray();
+        totalItems = data.Count();
+        switch (state.SortLabel)
+        {
+            case "name_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.Name);
+                break;
+            case "desc_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.Description);
+                break;
+            case "stockItems_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.StockItems);
+                break;
+        }
+
+        pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+        return new TableData<Product>() { TotalItems = totalItems, Items = pagedData };
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<Product> tableRowClickEventArgs)
+    {
+    }
+
+    private string SelectedRowClassFunc(Product product, int rowNumber)
+    {
+        if (selectedRowNumber == rowNumber)
+        {
+            selectedRowNumber = -1;
+            return string.Empty;
+        }
+        else if (table.SelectedItem != null && table.SelectedItem.Equals(product))
+        {
+            selectedRowNumber = rowNumber;
+            return "selected";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+}
