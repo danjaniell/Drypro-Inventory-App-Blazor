@@ -17,7 +17,7 @@
 
         if (result ?? false)
         {
-            var productToDelete = Product;
+            var productToDelete = await Repository.Products.GetProductById(Product.Id, false);
             Repository.Products.DeleteProduct(productToDelete);
             await Repository.SaveAsync();
             await OnDeleteProduct.InvokeAsync();

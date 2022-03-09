@@ -11,7 +11,7 @@
     private async Task UpdateAsync()
     {
         var parameters = new DialogParameters();
-        var productToUpdate = Product;
+        var productToUpdate = await Repository.Products.GetProductById(Product.Id, true);
         parameters.Add("product", productToUpdate);
         var dialog = await _dialogService.Show<AddUpdateProductsDialog>("Update", parameters).Result;
         if (dialog.Data != null)

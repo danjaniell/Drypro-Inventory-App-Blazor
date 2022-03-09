@@ -65,7 +65,7 @@
     private async Task ActionCallback()
     {
         this.StateHasChanged();
-        table.ReloadServerData();
+        await table.ReloadServerData();
     }
 
     private async Task<TableData<Product>> ServerReload(TableState state)
