@@ -1,5 +1,6 @@
 @inject IRepositoryManager Repository
-@inject IDialogService _dialogService;
+@inject IDialogService _dialogService
+@inject MudBlazor.ISnackbar snackBar
 
 <MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Size="Size.Medium" IconSize="Size.Medium"
     Label="Add Product" Class="ma-2" @onclick="(e => CreateAsync())" />
@@ -19,6 +20,7 @@
             await Repository.Products.CreateProduct(newProduct);
             await Repository.SaveAsync();
             await OnAddProduct.InvokeAsync();
+            snackBar.Add("Product Added.", Severity.Success);
         }
     }
 }

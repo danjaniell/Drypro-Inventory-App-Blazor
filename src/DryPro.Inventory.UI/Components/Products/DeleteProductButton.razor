@@ -1,5 +1,6 @@
 @inject IRepositoryManager Repository
-@inject IDialogService _dialogService;
+@inject IDialogService _dialogService
+@inject MudBlazor.ISnackbar snackBar
 
 <MudFab Disabled="@(Product == null ? true : false)" Color="Color.Primary" Icon="@Icons.Material.Filled.Delete"
     Size="Size.Medium" IconSize="Size.Medium" Label="Delete Product" Class="ma-2" @onclick="(e => DeleteAsync())" />
@@ -21,6 +22,7 @@
             Repository.Products.DeleteProduct(productToDelete);
             await Repository.SaveAsync();
             await OnDeleteProduct.InvokeAsync();
+            snackBar.Add("Product Deleted.", Severity.Success);
         }
     }
 }
