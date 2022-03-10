@@ -17,5 +17,7 @@ namespace DryPro.Inventory.Core.Entities
         public string Description { get; set; }
         [DisplayName("Stock Items")]
         public int StockItems { get; set; }
+        [DisplayName("Cost")]
+        public decimal Cost { get; set; }
     }
 }

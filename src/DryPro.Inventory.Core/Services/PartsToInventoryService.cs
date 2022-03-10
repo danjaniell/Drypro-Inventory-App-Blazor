@@ -17,7 +17,7 @@ namespace DryPro.Inventory.Core.Services
             Name = _parts.Name,
             Description = _parts.Description,
             StockItems = _parts.StockItems,
-            Cost = 0
+            Cost = _parts.Cost
         };
     }
 }
