@@ -1,0 +1,28 @@
+@inject IRepositoryManager Repository
+@inject IDialogService _dialogService
+@inject MudBlazor.ISnackbar snackBar
+
+<MudFab Disabled="@(Product == null ? true : false)" Color="Color.Primary" Icon="@Icons.Material.Filled.Delete"
+    Size="Size.Medium" IconSize="Size.Medium" Label="Delete Product" Class="ma-2" @onclick="(e => DeleteAsync())" />
+
+@code {
+    [Parameter] public Product Product { get; set; }
+    [Parameter] public EventCallback OnDeleteProduct { get; set; }
+
+    private async Task DeleteAsync()
+    {
+        bool? result = await _dialogService.ShowMessageBox(
+        "Confirmation",
+        "Are you sure you want to delete the selected item/s?",
+        yesText: "Delete", cancelText: "Cancel");
+
+        if (result ?? false)
+        {
+            var productToDelete = await Repository.Products.GetProductById(Product.Id, true);
+            Repository.Products.DeleteProduct(productToDelete);
+            await Repository.SaveAsync();
+            await OnDeleteProduct.InvokeAsync();
+            snackBar.Add("Product Deleted.", Severity.Success);
+        }
+    }
+}

@@ -1,0 +1,33 @@
+@inject IRepositoryManager Repository
+@inject IDialogService _dialogService
+@inject MudBlazor.ISnackbar snackBar
+
+<MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Size="Size.Medium" IconSize="Size.Medium"
+    Label="Add Product" Class="ma-2" @onclick="(e => CreateAsync())" />
+
+@code {
+    [Parameter] public EventCallback OnAddProduct { get; set; }
+
+    private async Task CreateAsync()
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("product", new Product());
+        var dialog = await _dialogService.Show<AddUpdateProductsDialog>(
+        "Create",
+        parameters,
+        new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        }).Result;
+
+        if (dialog.Data != null)
+        {
+            Product newProduct = dialog.Data as Product;
+            await Repository.Products.CreateProduct(newProduct);
+            await Repository.SaveAsync();
+            await OnAddProduct.InvokeAsync();
+            snackBar.Add("Product Added.", Severity.Success);
+        }
+    }
+}

@@ -29,7 +29,8 @@ namespace DryPro.Inventory.Infrastructure.DbContexts
             var ids = 1;
             var contacts = new Faker<Product>()
                 .RuleFor(m => m.Id, f => ids++)
-                .RuleFor(m => m.Name, f => f.Commerce.ProductName())
+                .RuleFor(m => m.Type, f => f.Random.Enum<ProductType>())
+                .RuleFor(m => m.Color, f => f.Random.Enum<ProductColor>())
                 .RuleFor(m => m.Description, f => f.Commerce.ProductDescription())
                 .RuleFor(m => m.StockItems, f => f.Random.Number(30))
                 .RuleFor(m => m.CreatedBy, f => f.Hacker.Noun())

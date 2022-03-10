@@ -3,12 +3,11 @@ using FluentValidation;
 
 namespace DryPro.Inventory.Application.Validators
 {
-    public class ProductValidator : AbstractValidator<Product>
+    public class PartValidator : AbstractValidator<Parts>
     {
-        public ProductValidator()
+        public PartValidator()
         {
-            RuleFor(x => x.Type).IsInEnum().NotEmpty();
-            RuleFor(x => x.Color).IsInEnum().NotEmpty();
+            RuleFor(x => x.Name).NotEmpty().NotNull().MaximumLength(55);
             RuleFor(x => x.Description).NotEmpty().NotNull().MaximumLength(255);
             RuleFor(x => x.StockItems).GreaterThanOrEqualTo(0).WithMessage("Cannot be negative");
         }

@@ -1,0 +1,128 @@
+@inject IRepositoryManager Repository
+
+<style>
+    .selected {
+        background-color: #1E88E5 !important;
+    }
+
+    .selected>td {
+        color: white !important;
+    }
+
+    .selected>td .mud-input {
+        color: white !important;
+    }
+</style>
+<MudContainer Class="d-flex justify-left mb-2">
+    <AddPartsButton OnAddParts="ActionCallback" />
+    <UpdatePartsButton Parts="SelectedPart" OnUpdateParts="ActionCallback" />
+    <DeletePartsButton Parts="SelectedPart" OnDeleteParts="ActionCallback" />
+</MudContainer>
+
+<MudTable ServerData="@(new Func<TableState, Task<TableData<Parts>>>(ServerReload))"
+    RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Parts" Hover="true" @ref="table" Height="100%"
+    @bind-SelectedItem="SelectedPart">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Parts</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="name_field" T="Parts">Name</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="desc_field" T="Parts">Description</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="stockItems_field" T="Parts">Stock Items</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Stock Items">@context.StockItems</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private int selectedRowNumber = -1;
+    private IEnumerable<Parts> pagedData;
+    private MudTable<Parts> table;
+    private int totalItems;
+    private string searchString;
+    private Parts SelectedPart { get; set; }
+
+    private async Task ActionCallback()
+    {
+        await table.ReloadServerData();
+    }
+
+    private async Task<TableData<Parts>> ServerReload(TableState state)
+    {
+        IEnumerable<Parts> data = await Repository.Parts.GetAllParts(false);
+        data = data.Where(x =>
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+                return true;
+            if (x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (x.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            return false;
+        }).ToArray();
+        totalItems = data.Count();
+        switch (state.SortLabel)
+        {
+            case "name_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.Name);
+                break;
+            case "desc_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.Description);
+                break;
+            case "stockItems_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.StockItems);
+                break;
+        }
+
+        pagedData = data.Skip(state.Page * state.PageSize).Take(state.PageSize).ToArray();
+
+        SelectedPart = null;
+        this.StateHasChanged();
+
+        return new TableData<Parts>() { TotalItems = totalItems, Items = pagedData };
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<Parts> tableRowClickEventArgs)
+    {
+    }
+
+    private string SelectedRowClassFunc(Parts parts, int rowNumber)
+    {
+        if (table.SelectedItem != null && table.SelectedItem.Equals(parts))
+        {
+            selectedRowNumber = rowNumber;
+            return "selected";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+}

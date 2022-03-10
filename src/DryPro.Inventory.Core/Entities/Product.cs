@@ -10,13 +10,30 @@ namespace DryPro.Inventory.Core.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [DisplayName("Name")]
-        [StringLength(55)]
-        public string Name { get; set; }
+        [DisplayName("Type")]
+        public ProductType Type { get; set; }
+        [DisplayName("Color")]
+        public ProductColor Color { get; set; }
         [DisplayName("Description")]
         [StringLength(255)]
         public string Description { get; set; }
         [DisplayName("Stock Items")]
         public int StockItems { get; set; }
+    }
+
+    public enum ProductType
+    {
+        [Display(Name = "Bath Towel")] BathTowel = 1,
+        [Display(Name = "Hand Towel")] HandTowel
+    }
+
+    public enum ProductColor
+    {
+        Blue = 1,
+        Yellow,
+        Red,
+        Gray,
+        Pink,
+        Purple,
     }
 }

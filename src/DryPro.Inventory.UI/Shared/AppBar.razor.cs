@@ -7,12 +7,11 @@ namespace DryPro.Inventory.UI.Shared
     public partial class AppBar
     {
         private bool _isLightMode = true;
+        private bool _isMenuCollapsed = true;
         private MudTheme _currentTheme = new();
 
-        [Parameter]
-        public EventCallback OnSidebarToggled { get; set; }
-        [Parameter]
-        public EventCallback<MudTheme> OnThemeToggled { get; set; }
+        [Parameter] public EventCallback OnSidebarToggled { get; set; }
+        [Parameter] public EventCallback<MudTheme> OnThemeToggled { get; set; }
 
         private async Task ToggleTheme()
         {
@@ -21,6 +20,13 @@ namespace DryPro.Inventory.UI.Shared
             _currentTheme = !_isLightMode ? GenerateDarkTheme() : new MudTheme();
 
             await OnThemeToggled.InvokeAsync(_currentTheme);
+        }
+
+        private async Task ToggleSideBar()
+        {
+            _isMenuCollapsed = !_isMenuCollapsed;
+
+            await OnSidebarToggled.InvokeAsync();
         }
 
         private static MudTheme GenerateDarkTheme() =>
