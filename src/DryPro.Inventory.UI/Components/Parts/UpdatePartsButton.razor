@@ -12,7 +12,7 @@
     private async Task UpdateAsync()
     {
         var parameters = new DialogParameters();
-        var partsToUpdate = await Repository.Parts.GetPartsById(Parts.Id, true);
+        var partsToUpdate = await Repository.Parts.GetPartById(Parts.Id, true);
         parameters.Add("parts", partsToUpdate);
         var dialog = await _dialogService.Show<AddUpdatePartsDialog>(
         "Update",

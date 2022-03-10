@@ -23,7 +23,7 @@
     RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Parts" Hover="true" @ref="table" Height="100%"
     @bind-SelectedItem="SelectedPart">
     <ToolBarContent>
-        <MudText Typo="Typo.h6">Partss</MudText>
+        <MudText Typo="Typo.h6">Parts</MudText>
         <MudSpacer />
         <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
             AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
@@ -70,7 +70,7 @@
 
     private async Task<TableData<Parts>> ServerReload(TableState state)
     {
-        IEnumerable<Parts> data = await Repository.Parts.GetAllPartss(false);
+        IEnumerable<Parts> data = await Repository.Parts.GetAllParts(false);
         data = data.Where(x =>
         {
             if (string.IsNullOrWhiteSpace(searchString))
