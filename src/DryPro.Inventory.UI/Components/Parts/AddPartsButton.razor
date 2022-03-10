@@ -27,7 +27,7 @@
             await Repository.Parts.CreateParts(newParts);
             await Repository.SaveAsync();
             await OnAddParts.InvokeAsync();
-            snackBar.Add("Parts Added.", Severity.Success);
+            snackBar.Add("Part Added.", Severity.Success);
         }
     }
 }

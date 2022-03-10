@@ -22,7 +22,7 @@
             Repository.Parts.DeleteParts(partsToDelete);
             await Repository.SaveAsync();
             await OnDeleteParts.InvokeAsync();
-            snackBar.Add("Parts Deleted.", Severity.Success);
+            snackBar.Add("Part Deleted.", Severity.Success);
         }
     }
 }

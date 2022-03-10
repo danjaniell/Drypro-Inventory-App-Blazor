@@ -29,7 +29,7 @@
             Repository.Parts.UpdateParts(updatedParts);
             await Repository.SaveAsync();
             await OnUpdateParts.InvokeAsync();
-            snackBar.Add("Parts Updated.", Severity.Success);
+            snackBar.Add("Part Updated.", Severity.Success);
         }
     }
 }
