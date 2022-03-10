@@ -1,0 +1,35 @@
+@inject IRepositoryManager Repository
+@inject IDialogService _dialogService
+@inject MudBlazor.ISnackbar snackBar
+
+<MudFab Disabled="@(Parts == null ? true : false)" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit"
+    Size="Size.Medium" IconSize="Size.Medium" Label="Update Parts" Class="ma-2" @onclick="(e => UpdateAsync())" />
+
+@code {
+    [Parameter] public Parts Parts { get; set; }
+    [Parameter] public EventCallback OnUpdateParts { get; set; }
+
+    private async Task UpdateAsync()
+    {
+        var parameters = new DialogParameters();
+        var partsToUpdate = await Repository.Parts.GetPartsById(Parts.Id, true);
+        parameters.Add("parts", partsToUpdate);
+        var dialog = await _dialogService.Show<AddUpdatePartsDialog>(
+        "Update",
+        parameters,
+        new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        }).Result;
+
+        if (dialog.Data != null)
+        {
+            var updatedParts = dialog.Data as Parts;
+            Repository.Parts.UpdateParts(updatedParts);
+            await Repository.SaveAsync();
+            await OnUpdateParts.InvokeAsync();
+            snackBar.Add("Parts Updated.", Severity.Success);
+        }
+    }
+}

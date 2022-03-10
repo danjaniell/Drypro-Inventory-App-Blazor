@@ -1,0 +1,33 @@
+@inject IRepositoryManager Repository
+@inject IDialogService _dialogService
+@inject MudBlazor.ISnackbar snackBar
+
+<MudFab Color="Color.Primary" Icon="@Icons.Material.Filled.Add" Size="Size.Medium" IconSize="Size.Medium"
+    Label="Add Parts" Class="ma-2" @onclick="(e => CreateAsync())" />
+
+@code {
+    [Parameter] public EventCallback OnAddParts { get; set; }
+
+    private async Task CreateAsync()
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("parts", new Parts());
+        var dialog = await _dialogService.Show<AddUpdatePartsDialog>(
+        "Create",
+        parameters,
+        new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        }).Result;
+
+        if (dialog.Data != null)
+        {
+            Parts newParts = dialog.Data as Parts;
+            await Repository.Parts.CreateParts(newParts);
+            await Repository.SaveAsync();
+            await OnAddParts.InvokeAsync();
+            snackBar.Add("Parts Added.", Severity.Success);
+        }
+    }
+}
