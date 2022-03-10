@@ -42,6 +42,7 @@ namespace DryPro.Inventory.UI
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddFluentValidation();
             services.AddTransient<IValidator<Product>, ProductValidator>();
+            services.AddTransient<IValidator<Parts>, PartValidator>();
             services.AddMudServices();
             services.AddRazorPages();
             services.AddServerSideBlazor();

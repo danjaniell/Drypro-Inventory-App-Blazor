@@ -26,7 +26,7 @@
 
     private async Task Submit()
     {
-        var validator = new PartsValidator();
+        var validator = new PartValidator();
         var result = await validator.ValidateAsync(Parts);
         if (result.IsValid)
         {
