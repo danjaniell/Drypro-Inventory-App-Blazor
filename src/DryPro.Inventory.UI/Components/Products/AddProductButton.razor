@@ -12,7 +12,14 @@
     {
         var parameters = new DialogParameters();
         parameters.Add("product", new Product());
-        var dialog = await _dialogService.Show<AddUpdateProductsDialog>("Create", parameters).Result;
+        var dialog = await _dialogService.Show<AddUpdateProductsDialog>(
+        "Create",
+        parameters,
+        new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        }).Result;
 
         if (dialog.Data != null)
         {

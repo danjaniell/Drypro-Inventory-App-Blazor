@@ -14,7 +14,15 @@
         var parameters = new DialogParameters();
         var productToUpdate = await Repository.Products.GetProductById(Product.Id, true);
         parameters.Add("product", productToUpdate);
-        var dialog = await _dialogService.Show<AddUpdateProductsDialog>("Update", parameters).Result;
+        var dialog = await _dialogService.Show<AddUpdateProductsDialog>(
+        "Update",
+        parameters,
+        new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        }).Result;
+
         if (dialog.Data != null)
         {
             var updatedProduct = dialog.Data as Product;
