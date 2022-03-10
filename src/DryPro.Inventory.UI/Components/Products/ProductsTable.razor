@@ -30,7 +30,10 @@
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
-            <MudTableSortLabel SortLabel="name_field" T="Product">Name</MudTableSortLabel>
+            <MudTableSortLabel SortLabel="type_field" T="Product">Type</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="color_field" T="Product">Color</MudTableSortLabel>
         </MudTh>
         <MudTh>
             <MudTableSortLabel SortLabel="desc_field" T="Product">Description</MudTableSortLabel>
@@ -40,7 +43,8 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Type">@context.Type</MudTd>
+        <MudTd DataLabel="Color">@context.Color</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>
         <MudTd DataLabel="Stock Items">@context.StockItems</MudTd>
     </RowTemplate>
@@ -75,7 +79,9 @@
         {
             if (string.IsNullOrWhiteSpace(searchString))
                 return true;
-            if (x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            if (x.Type.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (x.Color.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
             if (x.Description.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -84,8 +90,11 @@
         totalItems = data.Count();
         switch (state.SortLabel)
         {
-            case "name_field":
-                data = data.OrderByDirection(state.SortDirection, o => o.Name);
+            case "type_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.Type);
+                break;
+            case "color_field":
+                data = data.OrderByDirection(state.SortDirection, o => o.Color);
                 break;
             case "desc_field":
                 data = data.OrderByDirection(state.SortDirection, o => o.Description);

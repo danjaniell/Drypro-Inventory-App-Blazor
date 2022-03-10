@@ -7,7 +7,8 @@ namespace DryPro.Inventory.Application.Validators
     {
         public ProductValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().NotNull().MaximumLength(55);
+            RuleFor(x => x.Type).IsInEnum().NotEmpty();
+            RuleFor(x => x.Color).IsInEnum().NotEmpty();
             RuleFor(x => x.Description).NotEmpty().NotNull().MaximumLength(255);
             RuleFor(x => x.StockItems).GreaterThanOrEqualTo(0).WithMessage("Cannot be negative");
         }
