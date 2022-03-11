@@ -102,8 +102,8 @@ namespace DryPro.Inventory.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Color")
-                        .HasColumnType("integer");
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric");
@@ -127,8 +127,8 @@ namespace DryPro.Inventory.Infrastructure.Migrations
                     b.Property<int>("StockItems")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

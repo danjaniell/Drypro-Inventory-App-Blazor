@@ -54,8 +54,8 @@ namespace DryPro.Inventory.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    Color = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: true),
+                    Color = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     StockItems = table.Column<int>(type: "integer", nullable: false),
                     Cost = table.Column<decimal>(type: "numeric", nullable: false),

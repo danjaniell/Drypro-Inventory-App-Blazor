@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DryPro.Inventory.Infrastructure.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20220310064009_Initial Migrations")]
+    [Migration("20220311053901_Initial Migrations")]
     partial class InitialMigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,8 +104,8 @@ namespace DryPro.Inventory.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Color")
-                        .HasColumnType("integer");
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric");
@@ -129,8 +129,8 @@ namespace DryPro.Inventory.Infrastructure.Migrations
                     b.Property<int>("StockItems")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
