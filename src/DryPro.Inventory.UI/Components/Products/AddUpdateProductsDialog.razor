@@ -16,7 +16,7 @@
             </MudSelect>
             <MudTextField T="string" Label="Description" Immediate="true" @bind-Value="Product.Description"
                 For="() => Product.Description" Lines=4 />
-            <MudTextField T="int" Label="Stock Items" Immediate="true" @bind-Value="Product.StockItems"
+            <MudNumericField T="int" Label="Stock Items" Immediate="true" @bind-Value="Product.StockItems"
                 For="() => Product.StockItems" />
         </EditForm>
     </DialogContent>
