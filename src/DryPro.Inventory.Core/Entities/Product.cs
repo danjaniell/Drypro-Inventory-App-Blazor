@@ -7,13 +7,32 @@ namespace DryPro.Inventory.Core.Entities
 {
     public class Product : BaseTransactionModel
     {
+        private ProductType _type;
+        private ProductColor _color;
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [DisplayName("Type")]
-        public ProductType Type { get; set; }
+        public string Type
+        {
+            get { return _type == 0 ? string.Empty : _type.ToString(); }
+            set
+            {
+                if (Enum.TryParse(value, out ProductType type)) { _type = type; }
+                else { _type = 0; }
+            }
+        }
         [DisplayName("Color")]
-        public ProductColor Color { get; set; }
+        public string Color
+        {
+            get { return _color == 0 ? string.Empty : _color.ToString(); }
+            set
+            {
+                if (Enum.TryParse(value, out ProductColor color)) { _color = color; }
+                else { _color = 0; }
+            }
+        }
         [DisplayName("Description")]
         [StringLength(255)]
         public string Description { get; set; }

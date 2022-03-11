@@ -2,10 +2,22 @@
     <DialogContent>
         <EditForm Model="Product">
             <FluentValidationValidator />
-            <MudTextField T="string" Label="Name" @bind-Value="Product.Name" For="() => Product.Name" />
-            <MudTextField T="string" Label="Description" @bind-Value="Product.Description"
+            <MudSelect T="string" Label="Type" Immediate="true" @bind-Value="Product.Type" For="() => Product.Type">
+                @foreach (var type in Enum.GetValues(typeof(ProductType)).Cast<ProductType>())
+                {
+                    <MudSelectItem T="string" Value="@type.ToString()">@type.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+            <MudSelect T="string" Label="Color" Immediate="true" @bind-Value="Product.Color" For="() => Product.Color">
+                @foreach (var color in Enum.GetValues(typeof(ProductColor)).Cast<ProductColor>())
+                {
+                    <MudSelectItem T="string" Value="@color.ToString()">@color.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+            <MudTextField T="string" Label="Description" Immediate="true" @bind-Value="Product.Description"
                 For="() => Product.Description" Lines=4 />
-            <MudTextField T="int" Label="Stock Items" @bind-Value="Product.StockItems" For="() => Product.StockItems" />
+            <MudTextField T="int" Label="Stock Items" Immediate="true" @bind-Value="Product.StockItems"
+                For="() => Product.StockItems" />
         </EditForm>
     </DialogContent>
     <DialogActions>
