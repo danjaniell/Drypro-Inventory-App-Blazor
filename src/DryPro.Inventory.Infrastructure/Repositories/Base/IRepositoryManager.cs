@@ -6,6 +6,7 @@ namespace DryPro.Inventory.Infrastructure.Repositories.Base
     {
         IProductsRepository Products { get; }
         IPartsRepository Parts { get; }
+        IInventoryRepository Inventory { get; }
         Task SaveAsync();
     }
 }
