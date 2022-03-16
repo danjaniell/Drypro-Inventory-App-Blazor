@@ -1,0 +1,58 @@
+<style>
+    .v-align-center {
+        display: grid;
+    }
+
+    .layer1 {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .layer2 {
+        margin-top: 20%;
+        grid-column: 1;
+        grid-row: 2;
+    }
+</style>
+
+<MudGrid>
+    <MudItem xs="12">
+        <MudGrid Justify="Justify.SpaceEvenly">
+            <MudItem xs="5">
+                <PartsTable />
+            </MudItem>
+            <MudItem xs="1">
+                <div class="v-align-center">
+                    <MudIconButton Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Inherit"
+                        Variant="Variant.Outlined" OnClick="AddToBuild" Class="layer1" />
+                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit"
+                        Variant="Variant.Outlined" OnClick="AddToBuild" Class="layer2" />
+                </div>
+            </MudItem>
+            <MudItem xs="5">
+                <MudSimpleTable Hover="true" FixedHeader="true" Dense="true" Style="height:300px;" Bordered="true">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+
+    private void AddToBuild()
+    {
+
+    }
+}
