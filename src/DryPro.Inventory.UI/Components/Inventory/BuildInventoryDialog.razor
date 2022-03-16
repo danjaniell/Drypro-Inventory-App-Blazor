@@ -1,0 +1,35 @@
+<MudDialog>
+    <DialogContent>
+        <EditForm Model="Inventory">
+            <FluentValidationValidator />
+            <MudTextField T="string" Label="Name" @bind-Value="Inventory.Name" For="() => Inventory.Name" />
+            <MudTextField T="string" Label="Description" @bind-Value="Inventory.Description" For="() => Inventory.Description"
+                Lines=4 />
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public Inventory Inventory { get; set; } = new();
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task Submit()
+    {
+        var validator = new InventoryValidator();
+        var result = await validator.ValidateAsync(Inventory);
+        if (result.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok<Inventory>(Inventory));
+        }
+    }
+}
