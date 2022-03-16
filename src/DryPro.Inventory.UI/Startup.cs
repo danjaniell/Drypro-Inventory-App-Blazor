@@ -36,10 +36,10 @@ namespace DryPro.Inventory.UI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<InventoryDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL"), x => x.MigrationsAssembly("DryPro.Inventory.Infrastructure")));
+            services.AddDbContext<InventoryDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL"), x => x.MigrationsAssembly("DryPro.Inventory.Infrastructure")), ServiceLifetime.Transient);
             services.AddHttpContextAccessor();
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<IRepositoryManager, RepositoryManager>();
+            services.AddTransient<IRepositoryManager, RepositoryManager>();
             services.AddFluentValidation();
             services.AddTransient<IValidator<Product>, ProductValidator>();
             services.AddTransient<IValidator<Parts>, PartValidator>();
