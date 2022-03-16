@@ -1,16 +1,28 @@
+@inject IRepositoryManager Repository
+
 <MudContainer Class="d-flex justify-left mb-2">
-    <AddPartsButton OnAddParts="ActionCallback" />
-    <UpdatePartsButton Parts="SelectedPart" OnUpdateParts="ActionCallback" />
-    <DeletePartsButton Parts="SelectedPart" OnDeleteParts="ActionCallback" />
+    <AddPartsButton OnAddParts="ReloadTableData" />
+    <UpdatePartsButton Parts="SelectedPart" OnUpdateParts="ReloadTableData" />
+    <DeletePartsButton Parts="SelectedPart" OnDeleteParts="ReloadTableData" />
 </MudContainer>
-<PartsTable Table="table" />
+<PartsTable Table="table" OnPartsSelected="PartSelected" OnTableLoad="AssignTableValue" />
 
 @code {
     private MudTable<Parts> table;
     private Parts SelectedPart { get; set; }
 
-    private async Task ActionCallback()
+    private async Task ReloadTableData()
     {
         await table.ReloadServerData();
+    }
+
+    private void PartSelected(Parts part)
+    {
+        SelectedPart = part;
+    }
+
+    private void AssignTableValue(MudTable<Parts> partsTable)
+    {
+        table = partsTable;
     }
 }

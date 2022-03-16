@@ -57,9 +57,12 @@
     private int totalItems;
     private string searchString;
     private Parts SelectedPart { get; set; }
+    [Parameter] public EventCallback<Parts> OnPartsSelected { get; set; }
+    [Parameter] public EventCallback<MudTable<Parts>> OnTableLoad { get; set; }
 
     private async Task<TableData<Parts>> ServerReload(TableState state)
     {
+        await OnTableLoad.InvokeAsync(Table);
         IEnumerable<Parts> data = await Repository.Parts.GetAllParts(false);
         data = data.Where(x =>
         {
@@ -99,8 +102,9 @@
         Table.ReloadServerData();
     }
 
-    private void RowClickEvent(TableRowClickEventArgs<Parts> tableRowClickEventArgs)
+    private async Task RowClickEvent(TableRowClickEventArgs<Parts> tableRowClickEventArgs)
     {
+        await OnPartsSelected.InvokeAsync((tableRowClickEventArgs.Row.Item as Parts));
     }
 
     private string SelectedRowClassFunc(Parts parts, int rowNumber)
