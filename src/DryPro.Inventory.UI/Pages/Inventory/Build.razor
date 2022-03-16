@@ -18,5 +18,21 @@
 
     private async Task BuildItem()
     {
+        var parameters = new DialogParameters();
+        parameters.Add("inventory", new Inventory());
+        var dialog = await _dialogService.Show<BuildInventoryDialog>("Create", parameters,
+        new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        }).Result;
+
+        if (dialog.Data != null)
+        {
+            Inventory newInventory = dialog.Data as Inventory;
+            await Repository.Inventory.CreateItem(newInventory);
+            await Repository.SaveAsync();
+            snackBar.Add("Success!", Severity.Success);
+        }
     }
 }
