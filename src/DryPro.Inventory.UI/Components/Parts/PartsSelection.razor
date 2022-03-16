@@ -13,36 +13,53 @@
         grid-column: 1;
         grid-row: 2;
     }
+
+    .selected {
+        background-color: #1E88E5 !important;
+    }
+
+    .selected>td {
+        color: white !important;
+    }
+
+    .selected>td .mud-input {
+        color: white !important;
+    }
 </style>
 
 <MudGrid>
     <MudItem xs="12">
         <MudGrid Justify="Justify.SpaceEvenly">
             <MudItem xs="5">
-                <PartsTable />
+                <PartsTable OnPartsSelected="PartSelected" />
             </MudItem>
             <MudItem xs="1">
                 <div class="v-align-center">
-                    <MudIconButton Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Inherit"
-                        Variant="Variant.Outlined" OnClick="AddToBuild" Class="layer1" />
-                    <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit"
-                        Variant="Variant.Outlined" OnClick="AddToBuild" Class="layer2" />
+                    <MudIconButton Disabled="@(SelectedFromParts == null ? true : false)"
+                        Icon="@Icons.Material.Filled.ArrowForward" Color="Color.Inherit" Variant="Variant.Outlined"
+                        OnClick="AddToBuild" Class="layer1" />
+                    <MudIconButton Disabled="@(SelectedFromBuild == null ? true : false)"
+                        Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit" Variant="Variant.Outlined"
+                        OnClick="RemoveFromBuild" Class="layer2" />
                 </div>
             </MudItem>
             <MudItem xs="5">
-                <MudSimpleTable Hover="true" FixedHeader="true" Dense="true" Style="height:300px;" Bordered="true">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </MudSimpleTable>
+                <MudTable Items="@BuildParts" T="Parts" Hover="true" FixedHeader="true" Dense="true"
+                    Style="height:300px;" Bordered="true" RowClassFunc="@SelectedRowClassFunc" @ref="table"
+                    Height="100%" @bind-SelectedItem="SelectedFromBuild">
+                    <ColGroup>
+                        <col style="width: 40%;" />
+                        <col style="width: 60%;" />
+                    </ColGroup>
+                    <HeaderContent>
+                        <MudTh>Name</MudTh>
+                        <MudTh>Description</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Name">@context.Name</MudTd>
+                        <MudTd DataLabel="Description">@context.Description</MudTd>
+                    </RowTemplate>
+                </MudTable>
             </MudItem>
         </MudGrid>
     </MudItem>
@@ -50,9 +67,44 @@
 
 
 @code {
+    private int selectedRowNumber = -1;
+    private Parts SelectedFromParts { get; set; }
+    private Parts SelectedFromBuild { get; set; }
+    private ICollection<Parts> BuildParts { get; set; } = new List<Parts>();
+    private MudTable<Parts> table;
+
+    private void PartSelected(Parts part)
+    {
+        SelectedFromParts = part;
+    }
 
     private void AddToBuild()
     {
+        if (SelectedFromParts != null)
+        {
+            BuildParts.Add(SelectedFromParts);
+        }
+    }
 
+    private void RemoveFromBuild()
+    {
+        if (SelectedFromBuild != null)
+        {
+            BuildParts.Remove(SelectedFromBuild);
+            SelectedFromBuild = null;
+        }
+    }
+
+    private string SelectedRowClassFunc(Parts parts, int rowNumber)
+    {
+        if (table.SelectedItem != null && table.SelectedItem.Equals(parts))
+        {
+            selectedRowNumber = rowNumber;
+            return "selected";
+        }
+        else
+        {
+            return string.Empty;
+        }
     }
 }
