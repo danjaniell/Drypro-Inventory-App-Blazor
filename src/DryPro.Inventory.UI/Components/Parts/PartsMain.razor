@@ -5,7 +5,7 @@
     <UpdatePartsButton Parts="SelectedPart" OnUpdateParts="ReloadTableData" />
     <DeletePartsButton Parts="SelectedPart" OnDeleteParts="ReloadTableData" />
 </MudContainer>
-<PartsTable Table="table" OnPartsSelected="PartSelected" OnTableLoad="AssignTableValue" />
+<PartsTable OnPartsSelected="PartSelected" OnTableLoad="AssignTableValue" />
 
 @code {
     private MudTable<Parts> table;
